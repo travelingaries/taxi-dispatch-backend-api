@@ -1,0 +1,17 @@
+class CreateTaxiRequests < ActiveRecord::Migration[7.0]
+  def up
+    execute <<-SQL
+CREATE TABLE `taxi_requests` (
+  `id`              integer       PRIMARY KEY AUTOINCREMENT,
+  `passenger_id`    int(11)       NOT NULL,
+  `driver_id`       int(11)       DEFAULT NULL,
+  `address`         varchar(255)  NOT NULL,
+  `status`          tinyint(1)    NOT NULL DEFAULT 0,
+  `accepted_at`     datetime      DEFAULT NULL,
+  `created_at`      datetime      NOT NULL,
+  `updated_at`      datetime      NOT NULL
+);
+CREATE INDEX `index_taxi_requests_on_created_at` ON `taxi_requests`(`created_at`);
+    SQL
+  end
+end
