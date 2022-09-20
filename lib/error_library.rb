@@ -14,6 +14,10 @@ module ErrorLibrary
     def self.http_status; Rack::Utils::SYMBOL_TO_STATUS_CODE[:bad_request] end
   end
 
+  class Unauthorized < BaseError
+    def self.http_status; Rack::Utils::SYMBOL_TO_STATUS_CODE[:unauthorized] end
+  end
+
   class Duplicated < BaseError
     def self.http_status; Rack::Utils::SYMBOL_TO_STATUS_CODE[:conflict] end
   end

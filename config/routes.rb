@@ -5,4 +5,9 @@ Rails.application.routes.draw do
       post 'sign-up', action: :sign_up
     end
   end
+
+  resources :taxi_requests, only: [:index] do
+    collection do
+    end
+  end
 end
