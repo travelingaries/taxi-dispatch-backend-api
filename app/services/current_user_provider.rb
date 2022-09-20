@@ -27,21 +27,16 @@ class CurrentUserProvider
     return @env[CURRENT_USER_KEY] if @env.key?(CURRENT_USER_KEY)
 
     current_user = nil
-    token_from_header = jwe_payload
-    auth_token = token_from_header['auth_token'] if token_from_header
-
-    if auth_token && auth_token.length == 60
-      current_user = User.where(token: auth_token).take
+    if token_valid?
+      current_user = User.where(token: token_from_header).take
     end
 
     @env[CURRENT_USER_KEY] = current_user
   end
 
   def log_in_user(user)
-    unless user.token && user.token.length == 60
-      user.token = SecureRandom.hex(30)
-      user.save!
-    end
+    user.token = jwt_encode(user_id: user.id)
+    user.save!
     @env[CURRENT_USER_KEY] = user
   end
 end
