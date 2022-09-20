@@ -11,6 +11,9 @@ class UsersController < ApplicationController
     param! :password, String, required: true
     param! :userType, String, in: %w[passenger driver], required: true
 
+    prev_user = User.find_by_email(params[:email])
+    raise ErrorLibrary::Duplicated if prev_user.present?
+
     userType = case params[:userType]
                when "driver"
                  User::Driver
@@ -41,6 +44,8 @@ class UsersController < ApplicationController
               elsif params[:userType].blank? || !params[:userType].in?(%w[passenger driver])
                 "올바른 유저 타입을 입력해주세요"
               end
-    render json: { message: message }, status: :bad_request
+    render json: { message: message }, status: ErrorLibrary::InvalidParameters.http_status
+  rescue ErrorLibrary::Duplicated
+    render json: { message: "이미 가입된 이메일입니다" }, status: ErrorLibrary::Duplicated.http_status
   end
 end
