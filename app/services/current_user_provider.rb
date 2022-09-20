@@ -24,7 +24,7 @@ class CurrentUserProvider
   def request; @request ||= env_request end
 
   def current_user
-    return @env[CURRENT_USER_KEY] if @env.key?(CURRENT_USER_KEY)
+    # return @env[CURRENT_USER_KEY] if @env.key?(CURRENT_USER_KEY)
 
     current_user = nil
     if token_valid?
