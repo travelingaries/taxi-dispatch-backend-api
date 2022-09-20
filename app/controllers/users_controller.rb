@@ -1,9 +1,15 @@
 class UsersController < ApplicationController
-  def login
-    logger.debug('hi')
-    render json: {
-      contents: 'hi'
-    }.as_json
+  def sign_in
+    param! :email, String, required: true
+    param! :password, String, required: true
+
+    user = User.find_by_email(params[:email])
+    user = log_in_user(user) if user.authenticate(params[:password]).present?
+    logger.debug('got here 2')
+
+    render json: { accessToken: user.token }
+  rescue
+    render json: { message: "아이디와 비밀번호를 확인해주세요" }, status: ErrorLibrary::InvalidCredentials.http_status
   end
 
   def sign_up

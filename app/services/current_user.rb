@@ -15,6 +15,6 @@ module CurrentUser
   private
 
   def current_user_provider
-    @current_user_provider ||= CurrentUserProvider.new_instance(request, response: response, cookies: cookies)
+    @current_user_provider ||= CurrentUserProvider.new_instance(request, response: response)
   end
 end

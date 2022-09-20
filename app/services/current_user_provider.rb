@@ -5,11 +5,13 @@ class CurrentUserProvider
 
   CURRENT_USER_KEY ||= '_CURRENT_USER_KEY'
 
+  attr_accessor :request, :response
+
   class << self
-    def new_instance(request, response: nil, cookies: nil)
+    def new_instance(request, response: nil)
       ins = new(request.env, response)
       ins.request = request
-      ins.cookies = cookies
+      ins
     end
   end
 
