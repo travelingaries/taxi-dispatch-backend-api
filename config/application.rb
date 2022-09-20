@@ -20,3 +20,5 @@ module TaxiDispatch
     # config.eager_load_paths << Rails.root.join("extras")
   end
 end
+
+require "./lib/error_library"
