@@ -55,6 +55,7 @@ gem 'rails_param'
 # gem "image_processing", "~> 1.2"
 
 group :development, :test do
+  gem 'byebug', platforms: %i(mri mingw x64_mingw), require: false
   gem "debug", platforms: %i[ mri mingw x64_mingw ]
   gem 'timecop'
   gem 'rspec'

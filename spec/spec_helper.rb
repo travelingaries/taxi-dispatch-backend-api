@@ -7,13 +7,15 @@ require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
 
 RSpec.configure do |config|
-  config.fixture_path = "./fixtures"
+  config.fixture_path = Rails.root.join('spec', 'fixtures')
   config.global_fixtures = :all
 
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false
   # instead of true.
   config.use_transactional_fixtures = false
+
+  config.include FactoryBot::Syntax::Methods
 
   # Database cleaner
   config.before(:suite) do
