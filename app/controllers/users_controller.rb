@@ -33,5 +33,14 @@ class UsersController < ApplicationController
       createdAt: user.created_at,
       updatedAt: user.updated_at
     }
+  rescue RailsParam::InvalidParameterError
+    message = if params[:email].blank? || !(params[:email] =~ /\A\S+@.+\.\S+\z/)
+                "올바른 이메일을 입력해주세요"
+              elsif params[:password].blank?
+                "올바른 비밀번호를 입력해주세요"
+              elsif params[:userType].blank? || !params[:userType].in?(%w[passenger driver])
+                "올바른 유저 타입을 입력해주세요"
+              end
+    render json: { message: message }, status: :bad_request
   end
 end
