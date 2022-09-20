@@ -24,7 +24,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_19_071817) do
   create_table "users", force: :cascade do |t|
     t.string "type", limit: 255
     t.string "email", limit: 255, null: false
-    t.string "password", limit: 255, null: false
+    t.string "password_digest", limit: 255, null: false
     t.string "token", limit: 255
     t.integer "status", limit: 1, default: 0, null: false
     t.datetime "created_at", precision: nil, null: false

@@ -18,7 +18,7 @@ class UsersController < ApplicationController
 
     user = User.create!(
       type: "User::#{userType}",
-      email: params[:email],
+      email: params[:email].downcase!,
       password: params[:password],
       status: 1
     )
