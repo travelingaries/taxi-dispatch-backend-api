@@ -11,18 +11,20 @@ class UsersController < ApplicationController
     param! :password, String, required: true
     param! :userType, String, in: %w[passenger driver], required: true
 
-    userType = params[:userType]
-    userType[0] = userType[0].capitalize
-
-    logger.debug("password: #{BCrypt::Password}")
-
-    user = User.create!(
-      type: "User::#{userType}",
-      email: params[:email].downcase!,
-      password: params[:password],
-      status: 1
-    )
-    user.save!
+    userType = case params[:userType]
+               when "driver"
+                 User::Driver
+               when "passenger"
+                 User::Passenger
+               end
+    unless userType.blank?
+      user = userType.create!(
+        email: params[:email],
+        password: params[:password],
+        status: 1
+      )
+      user.save!
+    end
 
     render json: {
       email: user.email,
