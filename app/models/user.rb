@@ -1,6 +1,5 @@
 class User < ApplicationRecord
   include ActiveModel::SecurePassword
-  validates_uniqueness_of :email
   has_secure_password
 
   before_save :downcase_email

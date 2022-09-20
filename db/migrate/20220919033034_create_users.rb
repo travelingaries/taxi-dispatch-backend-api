@@ -12,7 +12,6 @@ CREATE TABLE `users`(
   `updated_at`          datetime      NOT NULL,
   `data`                text          DEFAULT NULL
 );
-CREATE INDEX `index_users_on_email` ON `users`(`email`);
 CREATE INDEX `index_users_on_token` ON `users`(`token`);
     SQL
   end
