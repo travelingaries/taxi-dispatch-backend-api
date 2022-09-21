@@ -3,6 +3,8 @@ class ApplicationController < ActionController::Base
 
   protect_from_forgery with: :null_session, if: Proc.new { |c| c.request.format =~ %r{application/json} }
 
+  after_action :reset_current_user
+
   private
 
   def authenticate_request

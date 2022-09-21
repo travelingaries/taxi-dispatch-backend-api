@@ -24,7 +24,7 @@ class CurrentUserProvider
   def request; @request ||= env_request end
 
   def current_user
-    # return @env[CURRENT_USER_KEY] if @env.key?(CURRENT_USER_KEY)
+    return @env[CURRENT_USER_KEY] if @env.key?(CURRENT_USER_KEY)
 
     current_user = nil
     if token_valid?
@@ -38,5 +38,9 @@ class CurrentUserProvider
     user.token = jwt_encode(user_id: user.id)
     user.save!
     @env[CURRENT_USER_KEY] = user
+  end
+
+  def reset_current_user
+    @env[CURRENT_USER_KEY] = nil
   end
 end

@@ -12,6 +12,10 @@ module CurrentUser
     current_user_provider.current_user
   end
 
+  def reset_current_user
+    current_user_provider.reset_current_user
+  end
+
   private
 
   def current_user_provider
