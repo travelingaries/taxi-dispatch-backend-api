@@ -1,10 +1,5 @@
 FactoryBot.define do
   factory :user, class: User::Passenger do
-
-    after(:create) do |user|
-
-    end
-
     email             { Faker::Internet.unique.email }
     password_digest   { Faker::Internet.password }
     token             { SecureRandom.hex(30) }
