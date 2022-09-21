@@ -11,6 +11,7 @@ CREATE TABLE `taxi_requests` (
   `created_at`      datetime      NOT NULL,
   `updated_at`      datetime      NOT NULL
 );
+CREATE INDEX `index_taxi_requests_on_passenger_id` ON `taxi_requests`(`passenger_id`);
 CREATE INDEX `index_taxi_requests_on_created_at` ON `taxi_requests`(`created_at`);
     SQL
   end
