@@ -8,6 +8,7 @@ Rails.application.routes.draw do
 
   resources 'taxi-requests', :as => :taxi_requests, :controller => :taxi_requests, only: [:index, :create] do
     collection do
+      post ':taxi_request_id/accept', action: :accept_request
     end
   end
 end

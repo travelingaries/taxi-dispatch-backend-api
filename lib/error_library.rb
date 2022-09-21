@@ -22,6 +22,10 @@ module ErrorLibrary
     def self.http_status; Rack::Utils::SYMBOL_TO_STATUS_CODE[:forbidden] end
   end
 
+  class NotFound < BaseError
+    def self.http_status; Rack::Utils::SYMBOL_TO_STATUS_CODE[:not_found] end
+  end
+
   class Duplicated < BaseError
     def self.http_status; Rack::Utils::SYMBOL_TO_STATUS_CODE[:conflict] end
   end

@@ -58,8 +58,31 @@ class TaxiRequestsController < ApplicationController
   def accept_request
     raise ErrorLibrary::Forbidden if current_user.is_a?(User::Passenger)
 
+    param! :taxi_request_id, Integer, required: true
+
+    request = TaxiRequest.find_by(id: params[:taxi_request_id])
+    raise ErrorLibrary::NotFound unless request.present?
+    raise ErrorLibrary::Duplicated if request.driver_id.present?
+
+    request.driver_id = current_user.id
+    request.accepted_at = Time.now
+    request.save!
+
+    render json: {
+      id: request.id,
+      address: request.address,
+      driverId: request.driver_id,
+      passengerId: request.passenger_id,
+      status: request.status_lang,
+      createdAt: request.created_at,
+      updatedAt: request.updated_at
+    }
 
   rescue ErrorLibrary::Forbidden
     render json: { message: "기사만 배차 요청을 수락할 수 있습니다" }, status: ErrorLibrary::Forbidden.http_status
+  rescue ErrorLibrary::NotFound
+    render json: { message: "존재하지 않는 배차 요청입니다 "}, status: ErrorLibrary::NotFound.http_status
+  rescue ErrorLibrary::Duplicated
+    render json: { message: "수락할 수 없는 배차 요청입니다. 다른 배차 요청을 선택하세요" }, status: ErrorLibrary::Duplicated.http_status
   end
 end
