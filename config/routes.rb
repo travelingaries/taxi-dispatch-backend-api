@@ -6,7 +6,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :taxi_requests, only: [:index] do
+  resources :taxi_requests, only: [:index, :create] do
     collection do
     end
   end

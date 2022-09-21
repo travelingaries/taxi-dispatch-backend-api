@@ -34,7 +34,6 @@ class UsersController < ApplicationController
         password: params[:password],
         status: 1
       )
-      user.save!
     end
 
     render json: {
