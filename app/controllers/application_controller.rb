@@ -7,6 +7,8 @@ class ApplicationController < ActionController::Base
 
   after_action :reset_current_user
 
+  helper_method :current_user
+
   private
 
   def authenticate_request
