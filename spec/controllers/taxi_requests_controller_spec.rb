@@ -50,6 +50,17 @@ RSpec.describe TaxiRequestsController, type: :controller do
         expect(response).to have_http_status(409)
       end
     end
+
+    describe 'accept_request' do
+      before(:each) do
+        @taxi_request = create(:taxi_request, passenger_id: @passenger.id)
+      end
+
+      it 'forbidden' do
+        post :accept_request, params: { taxi_request_id: @taxi_request.id }
+        expect(response).to have_http_status(403)
+      end
+    end
   end
 
   context 'with driver token' do
@@ -71,14 +82,40 @@ RSpec.describe TaxiRequestsController, type: :controller do
         expect(response).to have_http_status(200)
         json = JSON.parse(response.body)
         expect(json.is_a?(Array)).to eq(true)
-        expect(json.length >= 2).to eq(true)
+        expect(json.length >= 4).to eq(true)
       end
     end
 
     describe 'create' do
-      it 'cannot create' do
+      it 'forbidden' do
         post :create, params: { address: @address }
         expect(response).to have_http_status(403)
+      end
+    end
+
+    describe 'accept_request' do
+      before(:each) do
+        passenger = create(:passenger)
+        @taxi_request = create(:taxi_request, passenger_id: passenger.id)
+      end
+
+      it 'success' do
+        post :accept_request, params: { taxi_request_id: @taxi_request.id }
+        expect(response).to have_http_status(200)
+      end
+
+      it 'not found' do
+        post :accept_request, params: { taxi_request_id: 0 }
+        expect(response).to have_http_status(404)
+      end
+
+      it 'already accepted' do
+        another_driver = create(:driver)
+        @taxi_request.driver = another_driver
+        @taxi_request.save!
+
+        post :accept_request, params: { taxi_request_id: @taxi_request.id }
+        expect(response).to have_http_status(409)
       end
     end
   end
@@ -101,6 +138,14 @@ RSpec.describe TaxiRequestsController, type: :controller do
     describe 'create' do
       it 'without token' do
         post :create, params: { address: @address }
+        expect(response).to have_http_status(401)
+      end
+    end
+
+    describe 'accept_request' do
+      it 'without token' do
+        taxi_request = create(:taxi_request)
+        post :accept_request, params: { taxi_request_id: taxi_request.id }
         expect(response).to have_http_status(401)
       end
     end
