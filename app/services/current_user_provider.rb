@@ -20,16 +20,19 @@ class CurrentUserProvider
     @response = response
   end
 
-  def env_request; @env_request ||= Rack::Request.new(@env) end
-  def request; @request ||= env_request end
+  def env_request
+    @env_request ||= Rack::Request.new(@env)
+  end
+
+  def request
+    @request ||= env_request
+  end
 
   def current_user
     return @env[CURRENT_USER_KEY] if @env.key?(CURRENT_USER_KEY)
 
     current_user = nil
-    if token_valid?
-      current_user = User.where(token: token_from_header).take
-    end
+    current_user = User.where(token: token_from_header).take if token_valid?
 
     @env[CURRENT_USER_KEY] = current_user
   end

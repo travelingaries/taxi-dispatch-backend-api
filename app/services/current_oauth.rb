@@ -18,12 +18,10 @@ module CurrentOauth
 
   def token_valid?(token = nil)
     token = token_from_header if token.blank?
-    return false unless token.present?
+    return false if token.blank?
 
     payload = jwt_decode(token)
-    return payload['exp'] - Time.now.to_i > 0
-  rescue
-    false
+    (payload['exp'] - Time.now.to_i).positive?
   end
 
   private

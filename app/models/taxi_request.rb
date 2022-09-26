@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 class TaxiRequest < ApplicationRecord
   def status_lang
-    case self.status
+    case status
     when 1
       :waiting
     when 2

@@ -1,4 +1,6 @@
-require "current_user_provider"
+# frozen_string_literal: true
+
+require 'current_user_provider'
 
 module CurrentUser
   extend ActiveSupport::Concern
@@ -6,7 +8,6 @@ module CurrentUser
   def log_in_user(user)
     current_user_provider.log_in_user(user)
   end
-
 
   def current_user
     current_user_provider.current_user

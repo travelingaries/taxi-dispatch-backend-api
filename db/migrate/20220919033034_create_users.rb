@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 class CreateUsers < ActiveRecord::Migration[7.0]
   def up
-    execute <<-SQL
+    execute <<~SQL.squish
 CREATE TABLE `users`(
   `id`                  integer       PRIMARY KEY AUTOINCREMENT,
   `type`                varchar(255)  DEFAULT NULL,

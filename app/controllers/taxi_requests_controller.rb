@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class TaxiRequestsController < ApplicationController
   before_action :authenticate_request
 
@@ -46,13 +48,12 @@ class TaxiRequestsController < ApplicationController
       createdAt: request.created_at,
       updatedAt: request.updated_at
     }
-
   rescue RailsParam::InvalidParameterError, ErrorLibrary::InvalidParameters
-    render json: { message: "주소는 100자 이하로 입력해주세요" }, status: ErrorLibrary::InvalidParameters.http_status
+    render json: { message: '주소는 100자 이하로 입력해주세요' }, status: ErrorLibrary::InvalidParameters.http_status
   rescue ErrorLibrary::Forbidden
-    render json: { message: "승객만 배차 요청할 수 있습니다" }, status: ErrorLibrary::Forbidden.http_status
+    render json: { message: '승객만 배차 요청할 수 있습니다' }, status: ErrorLibrary::Forbidden.http_status
   rescue ErrorLibrary::Duplicated
-    render json: { message: "아직 대기중인 배차 요청이 있습니다" }, status: ErrorLibrary::Forbidden.http_status
+    render json: { message: '아직 대기중인 배차 요청이 있습니다' }, status: ErrorLibrary::Forbidden.http_status
   end
 
   def accept_request
@@ -61,11 +62,11 @@ class TaxiRequestsController < ApplicationController
     param! :taxi_request_id, Integer, required: true
 
     request = TaxiRequest.find_by(id: params[:taxi_request_id])
-    raise ErrorLibrary::NotFound unless request.present?
+    raise ErrorLibrary::NotFound if request.blank?
     raise ErrorLibrary::Duplicated if request.driver_id.present?
 
     request.driver_id = current_user.id
-    request.accepted_at = Time.now
+    request.accepted_at = Time.current
     request.save!
 
     render json: {
@@ -77,12 +78,11 @@ class TaxiRequestsController < ApplicationController
       createdAt: request.created_at,
       updatedAt: request.updated_at
     }
-
   rescue ErrorLibrary::Forbidden
-    render json: { message: "기사만 배차 요청을 수락할 수 있습니다" }, status: ErrorLibrary::Forbidden.http_status
+    render json: { message: '기사만 배차 요청을 수락할 수 있습니다' }, status: ErrorLibrary::Forbidden.http_status
   rescue ErrorLibrary::NotFound
-    render json: { message: "존재하지 않는 배차 요청입니다 "}, status: ErrorLibrary::NotFound.http_status
+    render json: { message: '존재하지 않는 배차 요청입니다' }, status: ErrorLibrary::NotFound.http_status
   rescue ErrorLibrary::Duplicated
-    render json: { message: "수락할 수 없는 배차 요청입니다. 다른 배차 요청을 선택하세요" }, status: ErrorLibrary::Duplicated.http_status
+    render json: { message: '수락할 수 없는 배차 요청입니다. 다른 배차 요청을 선택하세요' }, status: ErrorLibrary::Duplicated.http_status
   end
 end

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 class CreateTaxiRequests < ActiveRecord::Migration[7.0]
   def up
-    execute <<-SQL
+    execute <<~SQL.squish
 CREATE TABLE `taxi_requests` (
   `id`              integer       PRIMARY KEY AUTOINCREMENT,
   `passenger_id`    int(11)       NOT NULL,
