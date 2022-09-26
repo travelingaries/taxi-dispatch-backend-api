@@ -1,27 +1,56 @@
-require 'rspec'
+require 'spec_helper'
 
 RSpec.describe TaxiRequestsController, type: :controller do
-  context 'index' do
-    fixtures :users, :taxi_requests
-    it 'passenger' do
-      @request.headers["Authorization"] = "Token eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE2NjM3NDg2OTd9.-Pq8X4YTM8MDM4dXMmiogbrb0UvRXegjOVs7uHIEVpc"
-      get :index
-      expect(response).to have_http_status(200)
-      json = JSON.parse(response.body)
-      expect(json.is_a?(Array)).to eq(true)
+  describe 'index' do
+    context 'with token' do
+      before(:each) do
+        @new_passenger = create(:passenger)
+        @prev_passenger = create(:passenger)
+      end
+
+      it 'passenger' do
+        payload = { user_id: @new_passenger.id, exp: 1.day.from_now.to_i }
+        token =  JWT.encode(payload, Rails.application.secret_key_base)
+        @new_passenger.token = token
+        @new_passenger.save!
+
+        @request.headers["Authorization"] = "Token #{token}"
+
+        new_taxi_request = create(:taxi_request, passenger_id: @new_passenger.id)
+        prev_taxi_request = create(:taxi_request, passenger_id: @prev_passenger.id)
+
+        get :index
+        expect(response).to have_http_status(200)
+        json = JSON.parse(response.body)
+        expect(json.is_a?(Array)).to eq(true)
+        expect(json.length).to eq(1)
+      end
+
+      it 'driver' do
+        driver = create(:driver)
+        payload = { user_id: driver.id, exp: 1.day.from_now.to_i }
+        token =  JWT.encode(payload, Rails.application.secret_key_base)
+        driver.token = token
+        driver.save!
+
+        @request.headers["Authorization"] = "Token #{token}"
+
+        new_taxi_request = create(:taxi_request, passenger_id: @new_passenger.id)
+        prev_taxi_request = create(:taxi_request, passenger_id: @prev_passenger.id)
+
+        get :index
+        expect(response).to have_http_status(200)
+        json = JSON.parse(response.body)
+        expect(json.is_a?(Array)).to eq(true)
+        expect(json.length >= 2).to eq(true)
+      end
     end
 
-    it 'driver' do
-      @request.headers["Authorization"] = "Token eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyLCJleHAiOjE2NjM4MDczMTR9.u4dWV8C-ZrE_nWQAyOl6X7ZCS8pp1746naXBdOp_1BU"
-      get :index
-      expect(response).to have_http_status(200)
-      json = JSON.parse(response.body)
-      expect(json.is_a?(Array)).to eq(true)
-    end
-
-    it 'request without valid token' do
-      get :index
-      expect(response).to have_http_status(401)
+    context 'without valid token' do
+      it 'request without valid token' do
+        get :index
+        expect(response).to have_http_status(401)
+      end
     end
   end
 end
