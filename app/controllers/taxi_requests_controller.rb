@@ -8,7 +8,7 @@ class TaxiRequestsController < ApplicationController
     query = query.where(passenger_id: current_user.id) if current_user.is_a?(User::Passenger)
 
     taxi_requests = []
-    query.find_each(batch_size: 50) do |request|
+    query.find_each(batch_size: 200) do |request|
       taxi_requests << {
         id: request.id,
         address: request.address,
