@@ -65,9 +65,7 @@ class TaxiRequestsController < ApplicationController
     raise ErrorLibrary::NotFound if request.blank?
     raise ErrorLibrary::Duplicated if request.driver_id.present?
 
-    request.driver_id = current_user.id
-    request.accepted_at = Time.current
-    request.save!
+    request.update!(driver_id: current_user.id, accepted_at: Time.current)
 
     render json: {
       id: request.id,
