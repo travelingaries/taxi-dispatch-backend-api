@@ -33,3 +33,11 @@
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
+
+.idea/
+.DS_Store
+
+.rubocop-https---raw-githubusercontent-com-dramancompany-rubocop-drama-master--rubocop-drama-yml
+
+vendor/bundle
+rspec_results/*
