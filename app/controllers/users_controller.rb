@@ -39,13 +39,8 @@ class UsersController < ApplicationController
       )
     end
 
-    render json: {
-      email: user.email,
-      id: user.id,
-      userType: user_type,
-      createdAt: user.created_at,
-      updatedAt: user.updated_at
-    }
+    render json: user,
+           serializer: UserSerializer
   rescue RailsParam::InvalidParameterError
     message = if params[:email].blank? || (params[:email] !~ /\A\S+@.+\.\S+\z/)
                 '올바른 이메일을 입력해주세요'
