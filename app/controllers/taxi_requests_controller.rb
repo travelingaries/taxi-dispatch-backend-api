@@ -53,7 +53,7 @@ class TaxiRequestsController < ApplicationController
   rescue ErrorLibrary::Forbidden
     render json: { message: '승객만 배차 요청할 수 있습니다' }, status: ErrorLibrary::Forbidden.http_status
   rescue ErrorLibrary::Duplicated
-    render json: { message: '아직 대기중인 배차 요청이 있습니다' }, status: ErrorLibrary::Forbidden.http_status
+    render json: { message: '아직 대기중인 배차 요청이 있습니다' }, status: ErrorLibrary::Duplicated.http_status
   end
 
   def accept_request
