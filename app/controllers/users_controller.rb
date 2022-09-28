@@ -13,6 +13,8 @@ class UsersController < ApplicationController
     render json: { accessToken: user.token }
   rescue ErrorLibrary::InvalidCredentials
     render json: { message: '아이디와 비밀번호를 확인해주세요' }, status: ErrorLibrary::InvalidCredentials.http_status
+  rescue RailsParam::InvalidParameterError
+    render json: { message: '아이디와 비밀번호를 확인해주세요' }, status: ErrorLibrary::InvalidCredentials.http_status
   end
 
   def sign_up
