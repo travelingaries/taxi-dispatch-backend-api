@@ -1,7 +1,9 @@
 require 'spec_helper'
 
 RSpec.describe ApplicationController, type: :controller do
-  describe 'authenticate_request' do
+  subject { JSON.parse(response.body) }
+
+  describe '#authenticate_request' do
     controller(ApplicationController) do
       before_action :authenticate_request
 
@@ -10,44 +12,48 @@ RSpec.describe ApplicationController, type: :controller do
       end
     end
 
-    context 'authenticate_request' do
-      it 'token not set' do
-        set_request
-        get :index
-        expect(response).to have_http_status(401)
+    def request_index
+      get :index
+    end
+
+    context '발급됐던 토큰이 헤더에 있을 때' do
+      let!(:user) { create(:user) }
+      let(:current_user_provider) { CurrentUserProvider.new_instance(request) }
+
+      before(:each) do
+        current_user_provider.log_in_user(user)
+        set_request(user: user)
       end
 
-      it 'token invalid' do
-        user = User.new
-        user.token = "1234"
+      it_behaves_like 'OK 응답 처리', :request_index
 
-        set_request(user: user)
-        get :index
-        expect(response).to have_http_status(401)
-      end
-
-      it 'token expired' do
-        current_user_provider = CurrentUserProvider.new_instance(request)
-
-        user = create(:user)
-        user = current_user_provider.log_in_user(user)
-        current_user_provider.reset_current_user
-
-        set_request(user: user)
-        Timecop.travel(Time.now + 1.year) do
-          get :index
+      context '토큰이 만료되었을 때' do
+        before(:each) do
+          current_user_provider.reset_current_user
+          Timecop.freeze(Time.current.change(year: 1))
         end
-        expect(response).to have_http_status(401)
+
+        it_behaves_like 'Unauthorized 응답 처리', :request_index
       end
+    end
 
-      it 'token valid' do
-        user = create(:user)
-        user = CurrentUserProvider.new_instance(request).log_in_user(user)
+    context '유효하지 않은 토큰이 헤더에 있을 때' do
+      let!(:user) { create(:user) }
 
+      before(:each) do
+        user.token = '1234'
         set_request(user: user)
-        get :index
-        expect(response).to have_http_status(200)
       end
+
+      it_behaves_like 'Unauthorized 응답 처리', :request_index
+    end
+
+    context '헤더에 토큰이 없을 때' do
+      before(:each) do
+        set_request
+      end
+
+      it_behaves_like 'Unauthorized 응답 처리', :request_index
     end
   end
 end
