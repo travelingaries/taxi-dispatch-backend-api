@@ -31,7 +31,7 @@ class UsersController < ApplicationController
       user = user_type.create!(
         email: user_params[:email],
         password: user_params[:password],
-        status: 1
+        status: 'normal'
       )
     end
 

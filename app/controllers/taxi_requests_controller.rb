@@ -16,7 +16,7 @@ class TaxiRequestsController < ApplicationController
   def create
     raise Exceptions::Forbidden, '승객만 배차 요청할 수 있습니다' if current_user.is_a?(User::Driver)
 
-    prev_request = TaxiRequest.where(passenger_id: current_user.id, status: 1).order(created_at: :desc).first
+    prev_request = TaxiRequest.where(passenger_id: current_user.id).order(created_at: :desc).first
     raise Exceptions::Conflict, '아직 대기중인 배차 요청이 있습니다' if prev_request.present?
 
     request = TaxiRequest.create!(create_params)
@@ -44,7 +44,7 @@ class TaxiRequestsController < ApplicationController
 
   def create_params
     params.require(:address)
-    params.merge(passenger_id: current_user.id, status: 1).permit(:passenger_id, :address, :status)
+    params.merge(passenger_id: current_user.id).permit(:passenger_id, :address)
   end
 
   def accept_request_params

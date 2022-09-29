@@ -8,7 +8,7 @@ CREATE TABLE `taxi_requests` (
   `passenger_id`    int(11)       NOT NULL,
   `driver_id`       int(11)       DEFAULT NULL,
   `address`         varchar(255)  NOT NULL,
-  `status`          tinyint(1)    NOT NULL DEFAULT 0,
+  `status`          varchar(50)   CHECK( status IN ('waiting', 'accepted', 'canceled', 'completed') ) NOT NULL DEFAULT 'waiting',
   `accepted_at`     datetime      DEFAULT NULL,
   `created_at`      datetime      NOT NULL,
   `updated_at`      datetime      NOT NULL

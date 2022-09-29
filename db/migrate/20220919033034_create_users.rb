@@ -9,7 +9,7 @@ CREATE TABLE `users`(
   `email`               varchar(255)  NOT NULL UNIQUE,
   `password_digest`     varchar(255)  NOT NULL,
   `token`               varchar(255)  DEFAULT NULL,
-  `status`              tinyint(1)    NOT NULL DEFAULT 0,
+  `status`              varchar(50)   CHECK( status IN ('inspecting', 'normal', 'restricted', 'deactivated', 'hibernated') ) NOT NULL DEFAULT 'inspecting',
   `created_at`          datetime      NOT NULL,
   `updated_at`          datetime      NOT NULL,
   `data`                text          DEFAULT NULL

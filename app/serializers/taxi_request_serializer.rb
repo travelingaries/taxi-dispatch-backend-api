@@ -27,7 +27,7 @@ class TaxiRequestSerializer < BaseSerializer
   end
 
   def status
-    object.status_lang
+    object.status
   end
 
   def acceptedAt
