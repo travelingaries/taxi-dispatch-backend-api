@@ -9,7 +9,7 @@ class UsersController < ApplicationController
 
     raise Exceptions::BadRequest, '아이디와 비밀번호를 확인해주세요' unless user&.authenticate(params[:password])
 
-    user = log_in_user(user)
+    log_in_user(user)
     render json: { accessToken: user.token }
   rescue RailsParam::InvalidParameterError
     render json: { message: '아이디와 비밀번호를 확인해주세요' }, status: Exceptions::BadRequest.http_status
