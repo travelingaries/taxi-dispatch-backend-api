@@ -4,6 +4,8 @@ require 'jwt'
 
 module CurrentOauth
   extend ActiveSupport::Concern
+  include ActionController::HttpAuthentication::Token::ControllerMethods
+
   SECRET_KEY = Rails.application.secret_key_base
 
   def jwt_encode(payload, exp = 1.day.from_now)
@@ -31,8 +33,6 @@ module CurrentOauth
   private
 
   def token_from_header
-    authorization = request.headers['Authorization']
-    token = authorization && authorization.match(/Token (?<jwt>.*)/i)
-    !token.nil? && token[:jwt]
+    @current_user_token ||= authenticate_with_http_token { |token, _options| token }
   end
 end
