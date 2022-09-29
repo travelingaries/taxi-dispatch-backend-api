@@ -5,8 +5,6 @@ class ApplicationController < ActionController::Base
 
   protect_from_forgery unless: -> { request.format.json? }
 
-  after_action :reset_current_user
-
   helper_method :current_user
 
   rescue_from Exception do |e|
