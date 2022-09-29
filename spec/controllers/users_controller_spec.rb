@@ -51,6 +51,14 @@ RSpec.describe UsersController, type: :controller do
           let(:message) { '올바른 이메일을 입력해주세요' }
         end
       end
+
+      context '이메일 형식이 아닌 경우' do
+        before { params[:email] = "1" }
+
+        it_behaves_like 'Bad Request 응답 처리', :request do
+          let(:message) { '올바른 이메일을 입력해주세요' }
+        end
+      end
     end
 
     context '비밀번호가 유효하지 않은 경우' do
@@ -66,6 +74,14 @@ RSpec.describe UsersController, type: :controller do
     context '유저 타입이 유효하지 않은 경우' do
       context '유저 타입 항목이 없는 경우' do
         before { params.except!(:userType) }
+
+        it_behaves_like 'Bad Request 응답 처리', :request do
+          let(:message) { '올바른 유저 타입을 입력해주세요' }
+        end
+      end
+
+      context '유저 타입이 기사, 승객이 아닌 경우' do
+        before { params[:userType] = "1" }
 
         it_behaves_like 'Bad Request 응답 처리', :request do
           let(:message) { '올바른 유저 타입을 입력해주세요' }

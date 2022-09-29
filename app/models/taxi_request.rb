@@ -4,6 +4,8 @@ class TaxiRequest < ApplicationRecord
   belongs_to :passenger, class_name: "User", foreign_key: :passenger_id
   belongs_to :driver, optional: true, class_name: "User", foreign_key: :driver_id
 
+  validates :address, length: { maximum: 100 }
+
   def status_lang
     case status
     when 1

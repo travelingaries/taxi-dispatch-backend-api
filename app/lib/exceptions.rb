@@ -1,7 +1,14 @@
 # frozen_string_literal: true
 
-module ErrorLibrary
+module Exceptions
   class BaseError < StandardError
+    attr_reader :data
+
+    def initialize(message = '', data = {})
+      @data = data
+      super message
+    end
+
     def self.http_status
       Rack::Utils::SYMBOL_TO_STATUS_CODE[:internal_server_error]
     end
@@ -11,13 +18,7 @@ module ErrorLibrary
     end
   end
 
-  class InvalidParameters < BaseError
-    def self.http_status
-      Rack::Utils::SYMBOL_TO_STATUS_CODE[:bad_request]
-    end
-  end
-
-  class InvalidCredentials < BaseError
+  class BadRequest < BaseError
     def self.http_status
       Rack::Utils::SYMBOL_TO_STATUS_CODE[:bad_request]
     end
@@ -41,7 +42,7 @@ module ErrorLibrary
     end
   end
 
-  class Duplicated < BaseError
+  class Conflict < BaseError
     def self.http_status
       Rack::Utils::SYMBOL_TO_STATUS_CODE[:conflict]
     end
