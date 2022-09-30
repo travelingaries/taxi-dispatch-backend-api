@@ -4,16 +4,14 @@ class UsersController < ApplicationController
   before_action :check_already_signed_up, only: :sign_up
 
   def sign_in
-    param! :email, String, required: true
-    param! :password, String, required: true
+    user_params = sign_in_params
 
-    user = User.find_by(email: params[:email])
-
-    raise Exceptions::BadRequest, '아이디와 비밀번호를 확인해주세요' unless user&.authenticate(params[:password])
+    user = User.find_by(email: user_params[:email])
+    raise Exceptions::BadRequest, '아이디와 비밀번호를 확인해주세요' unless user&.authenticate(user_params[:password])
 
     log_in_user(user)
     render json: { accessToken: user.token }
-  rescue RailsParam::InvalidParameterError
+  rescue ActionController::ParameterMissing
     render json: { message: '아이디와 비밀번호를 확인해주세요' }, status: Exceptions::BadRequest.http_status
   end
 
