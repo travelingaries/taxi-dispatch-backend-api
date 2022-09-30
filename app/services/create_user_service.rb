@@ -12,7 +12,7 @@ class CreateUserService
                 when 'passenger'
                   User::Passenger
                 else
-                  User
+                  return
                 end
     user_type.create!(
       email: @params[:email],
