@@ -21,19 +21,7 @@ class UsersController < ApplicationController
     prev_user = User.find_by(email: user_params[:email])
     raise Exceptions::Conflict, '이미 가입된 이메일입니다' if prev_user.present?
 
-    user_type = case user_params[:userType]
-                when 'driver'
-                  User::Driver
-                when 'passenger'
-                  User::Passenger
-                end
-    if user_type.present?
-      user = user_type.create!(
-        email: user_params[:email],
-        password: user_params[:password],
-        status: 'normal'
-      )
-    end
+    user = CreateUserService.new(user_params).run!
 
     render json: user,
            serializer: UserSerializer
