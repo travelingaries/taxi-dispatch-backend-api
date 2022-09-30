@@ -7,15 +7,15 @@ class UserSerializer < BaseSerializer
              :createdAt,
              :updatedAt
 
-  def email
-    object.email
-  end
+  delegate :email, to: :object
+  delegate :id, to: :object
+  delegate :created_at, to: :object
+  delegate :updated_at, to: :object
 
-  def id
-    object.id
-  end
+  alias createdAt created_at
+  alias updatedAt updated_at
 
-  def userType
+  def user_type
     case object
     when User::Driver
       'driver'
@@ -24,11 +24,5 @@ class UserSerializer < BaseSerializer
     end
   end
 
-  def createdAt
-    object.created_at
-  end
-
-  def updatedAt
-    object.updated_at
-  end
+  alias userType user_type
 end

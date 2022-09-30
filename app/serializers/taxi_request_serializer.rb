@@ -10,35 +10,18 @@ class TaxiRequestSerializer < BaseSerializer
              :createdAt,
              :updatedAt
 
-  def id
-    object.id
-  end
+  delegate :id, to: :object
+  delegate :passenger_id, to: :object
+  delegate :driver_id, to: :object
+  delegate :address, to: :object
+  delegate :status, to: :object
+  delegate :accepted_at, to: :object
+  delegate :created_at, to: :object
+  delegate :updated_at, to: :object
 
-  def address
-    object.address
-  end
-
-  def driverId
-    object.driver_id
-  end
-
-  def passengerId
-    object.passenger_id
-  end
-
-  def status
-    object.status
-  end
-
-  def acceptedAt
-    object.accepted_at
-  end
-
-  def createdAt
-    object.created_at
-  end
-
-  def updatedAt
-    object.updated_at
-  end
+  alias passengerId passenger_id
+  alias driverId driver_id
+  alias acceptedAt accepted_at
+  alias createdAt created_at
+  alias updatedAt updated_at
 end

@@ -5,17 +5,11 @@ require 'current_user_provider'
 module CurrentUser
   extend ActiveSupport::Concern
 
-  def log_in_user(user)
-    current_user_provider.log_in_user(user)
-  end
+  delegate :log_in_user, to: :current_user_provider
 
-  def current_user
-    current_user_provider.current_user
-  end
+  delegate :current_user, to: :current_user_provider
 
-  def reset_current_user
-    current_user_provider.reset_current_user
-  end
+  delegate :reset_current_user, to: :current_user_provider
 
   private
 

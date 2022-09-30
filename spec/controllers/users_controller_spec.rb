@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 RSpec.describe UsersController, type: :controller do
@@ -53,7 +55,7 @@ RSpec.describe UsersController, type: :controller do
       end
 
       context '이메일 형식이 아닌 경우' do
-        before { params[:email] = "1" }
+        before { params[:email] = '1' }
 
         it_behaves_like 'Bad Request 응답 처리', :request do
           let(:message) { '올바른 이메일을 입력해주세요' }
@@ -81,7 +83,7 @@ RSpec.describe UsersController, type: :controller do
       end
 
       context '유저 타입이 기사, 승객이 아닌 경우' do
-        before { params[:userType] = "1" }
+        before { params[:userType] = '1' }
 
         it_behaves_like 'Bad Request 응답 처리', :request do
           let(:message) { '올바른 유저 타입을 입력해주세요' }

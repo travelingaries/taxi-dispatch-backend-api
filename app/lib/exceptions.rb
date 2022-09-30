@@ -14,7 +14,7 @@ module Exceptions
     end
 
     def self.symbol
-      self.name.underscore.to_sym
+      name.underscore.to_sym
     end
   end
 

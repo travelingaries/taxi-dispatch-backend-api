@@ -8,7 +8,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources 'taxi-requests', :as => :taxi_requests, :controller => :taxi_requests, only: %i(index create) do
+  resources 'taxi-requests', as: :taxi_requests, controller: :taxi_requests, only: %i(index create) do
     collection do
       post ':taxi_request_id/accept', action: :accept_request
     end

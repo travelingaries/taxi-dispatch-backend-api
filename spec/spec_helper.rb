@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 # See https://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
-ENV["RAILS_ENV"] ||= 'test'
+ENV['RAILS_ENV'] ||= 'test'
 require 'factory_bot'
 require 'webmock/rspec'
 
-require File.expand_path("../../config/environment", __FILE__)
+require File.expand_path('../config/environment', __dir__)
 require 'rspec/rails'
 require 'shared_helper'
 
@@ -14,7 +16,7 @@ require 'shared_helper'
 # run twice. It is recommended that you do not name files matching this glob to
 # end with _spec.rb. You can configure this pattern with the --pattern
 # option on the command line or in ~/.rspec, .rspec or `.rspec-local`.
-Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
+Dir[Rails.root.join('spec', 'support', '**', '*.rb')].sort.each { |f| require f }
 
 RSpec.configure do |config|
   config.fixture_path = Rails.root.join('spec', 'fixtures')
@@ -31,8 +33,8 @@ RSpec.configure do |config|
   config.before(:suite) do
     DatabaseCleaner.strategy = :transaction
   end
-  config.around(:each, :without_transactions => true) do |ex|
-    DatabaseCleaner.strategy = [:deletion, except: %w[confs promotions]]
+  config.around(:each, without_transactions: true) do |ex|
+    DatabaseCleaner.strategy = [:deletion, { except: %w(confs promotions) }]
     ex.run
     DatabaseCleaner.strategy = :transaction
   end

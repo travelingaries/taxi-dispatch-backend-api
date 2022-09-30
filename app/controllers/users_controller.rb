@@ -22,11 +22,11 @@ class UsersController < ApplicationController
     raise Exceptions::Conflict, '이미 가입된 이메일입니다' if prev_user.present?
 
     user_type = case user_params[:userType]
-               when 'driver'
-                 User::Driver
-               when 'passenger'
-                 User::Passenger
-               end
+                when 'driver'
+                  User::Driver
+                when 'passenger'
+                  User::Passenger
+                end
     if user_type.present?
       user = user_type.create!(
         email: user_params[:email],
@@ -65,10 +65,10 @@ class UsersController < ApplicationController
   end
 
   def valid_email?(email)
-    return email.match(/\A\S+@.+\.\S+\z/)
+    email.match(/\A\S+@.+\.\S+\z/)
   end
 
   def valid_user_type?(user_type)
-    return user_type.in?(%w[passenger driver])
+    user_type.in?(%w(passenger driver))
   end
 end

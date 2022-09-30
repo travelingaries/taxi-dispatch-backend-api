@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 RSpec.describe TaxiRequestsController, type: :controller do
@@ -94,7 +96,7 @@ RSpec.describe TaxiRequestsController, type: :controller do
       driver.token = token
       driver.save!
 
-      @request.headers["Authorization"] = "Token #{token}"
+      @request.headers['Authorization'] = "Token #{token}"
     end
 
     describe '#index' do
@@ -174,7 +176,7 @@ RSpec.describe TaxiRequestsController, type: :controller do
 
       context '발급된 적 없는 토큰인 경우' do
         before(:each) do
-          @request.headers["Authorization"] = "Token 1234"
+          @request.headers['Authorization'] = 'Token 1234'
         end
 
         it_behaves_like 'Unauthorized 응답 처리', :request

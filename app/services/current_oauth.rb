@@ -33,6 +33,6 @@ module CurrentOauth
   private
 
   def token_from_header
-    @current_user_token ||= authenticate_with_http_token { |token, _options| token }
+    @token_from_header ||= authenticate_with_http_token { |token, _options| token }
   end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 RSpec.describe ApplicationController, type: :controller do
@@ -22,7 +24,7 @@ RSpec.describe ApplicationController, type: :controller do
 
       before(:each) do
         current_user_provider.log_in_user(user)
-        set_request(user: user)
+        add_token_to_request(user: user)
       end
 
       it_behaves_like 'OK 응답 처리', :request_index
@@ -42,7 +44,7 @@ RSpec.describe ApplicationController, type: :controller do
 
       before(:each) do
         user.token = '1234'
-        set_request(user: user)
+        add_token_to_request(user: user)
       end
 
       it_behaves_like 'Unauthorized 응답 처리', :request_index
@@ -50,7 +52,7 @@ RSpec.describe ApplicationController, type: :controller do
 
     context '헤더에 토큰이 없을 때' do
       before(:each) do
-        set_request
+        add_token_to_request
       end
 
       it_behaves_like 'Unauthorized 응답 처리', :request_index
