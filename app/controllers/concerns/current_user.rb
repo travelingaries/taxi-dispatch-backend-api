@@ -6,9 +6,7 @@ module CurrentUser
   extend ActiveSupport::Concern
 
   delegate :log_in_user, to: :current_user_provider
-
   delegate :current_user, to: :current_user_provider
-
   delegate :reset_current_user, to: :current_user_provider
 
   private
