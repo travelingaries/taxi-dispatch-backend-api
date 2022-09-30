@@ -12,7 +12,7 @@ class TaxiRequestsController < ApplicationController
   include UserTypeResolver
 
   def index
-    requests = TaxiRequest.order(created_at: :desc)
+    requests = TaxiRequest.order(id: :desc)
     requests = requests.where(passenger_id: current_user.id) if current_user.is_a?(User::Passenger)
 
     render json: ActiveModel::Serializer::CollectionSerializer.new(
