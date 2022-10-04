@@ -15,8 +15,7 @@ RSpec.describe TaxiRequestsController, type: :controller do
     let(:token) { JWT.encode(payload, secret_key) }
 
     before(:each) do
-      passenger.token = token
-      passenger.save!
+      passenger.update!(token: token)
 
       @request.headers['Authorization'] = "Token #{token}"
     end
