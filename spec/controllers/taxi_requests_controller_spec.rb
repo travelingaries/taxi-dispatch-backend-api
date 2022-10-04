@@ -53,10 +53,16 @@ RSpec.describe TaxiRequestsController, type: :controller do
         it_behaves_like 'Created 응답 처리', :request
       end
 
-      context '주소가 너무 긴 경우' do
-        before { params[:address] = 'a' * 101 }
-
+      context '주소가 없는 경우' do
         it_behaves_like 'Bad Request 응답 처리', :request do
+          let(:params) { {} }
+          let(:message) { '주소는 100자 이하로 입력해주세요' }
+        end
+      end
+
+      context '주소가 너무 긴 경우' do
+        it_behaves_like 'Bad Request 응답 처리', :request do
+          let(:params) { { address: 'a' * 101 } }
           let(:message) { '주소는 100자 이하로 입력해주세요' }
         end
       end
