@@ -33,10 +33,11 @@ RSpec.describe TaxiRequestsController, type: :controller do
 
         it_behaves_like 'OK 응답 처리', :request
 
-        it '응답이 길이 1의 배열이다' do
+        it '응답이 TaxiRequest 정보가 담긴 길이 1의 배열이다' do
           request
           expect(subject.is_a?(Array)).to eq(true)
           expect(subject.length).to eq(1)
+          expect(subject.first['passengerId']).to eq(passenger.id)
         end
       end
     end
