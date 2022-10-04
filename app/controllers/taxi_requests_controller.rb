@@ -8,6 +8,7 @@ class TaxiRequestsController < ApplicationController
   before_action only: :accept_request do
     allow_drivers_only('기사만 배차 요청을 수락할 수 있습니다')
   end
+  before_action :find_taxi_request, only: %i(accept_request)
 
   include UserTypeResolver
 
@@ -34,13 +35,11 @@ class TaxiRequestsController < ApplicationController
   end
 
   def accept_request
-    request = TaxiRequest.find_by(id: accept_request_params[:taxi_request_id])
-    raise Exceptions::NotFound, '존재하지 않는 배차 요청입니다' if request.blank?
-    raise Exceptions::Conflict, '수락할 수 없는 배차 요청입니다. 다른 배차 요청을 선택하세요' if request.driver_id.present?
+    validate_taxi_request_acceptable
 
-    request.update!(driver_id: current_user.id, accepted_at: Time.current)
+    @request.accept!(current_user)
 
-    render json: request,
+    render json: @request,
            serializer: TaxiRequestSerializer
   end
 
@@ -54,5 +53,17 @@ class TaxiRequestsController < ApplicationController
   def accept_request_params
     params.require(:taxi_request_id)
     params.permit(:taxi_request_id)
+  end
+
+  def find_taxi_request
+    @request = TaxiRequest.find(params[:taxi_request_id])
+  rescue ActiveRecord::RecordNotFound
+    raise Exceptions::NotFound, '존재하지 않는 배차 요청입니다'
+  end
+
+  def validate_taxi_request_acceptable
+    return unless @request.accepted?
+
+    raise Exceptions::Conflict, '수락할 수 없는 배차 요청입니다. 다른 배차 요청을 선택하세요'
   end
 end

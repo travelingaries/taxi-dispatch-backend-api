@@ -7,4 +7,14 @@ class TaxiRequest < ApplicationRecord
   enum status: { waiting: 'waiting', accepted: 'accepted', canceled: 'canceled', completed: 'completed' }
 
   validates :address, length: { maximum: 100 }
+
+  def accepted?
+    driver.present?
+  end
+
+  def accept!(user)
+    return unless user.driver?
+
+    update!(driver_id: user.id, accepted_at: Time.current)
+  end
 end
