@@ -151,10 +151,7 @@ RSpec.describe TaxiRequestsController, type: :controller do
       context '이미 수락된 배차 요청인 경우' do
         let!(:another_driver) { create(:driver) }
 
-        before(:each) do
-          taxi_request.driver = another_driver
-          taxi_request.save!
-        end
+        before(:each) { taxi_request.update!(driver: another_driver) }
 
         it_behaves_like 'Conflict 응답 처리', :request do
           let(:message) { '수락할 수 없는 배차 요청입니다. 다른 배차 요청을 선택하세요' }
