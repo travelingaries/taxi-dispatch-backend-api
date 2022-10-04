@@ -3,6 +3,8 @@
 class UsersController < ApplicationController
   before_action :check_already_signed_up, only: :sign_up
 
+  VALID_USER_TYPES = %w(driver passenger).freeze
+
   def sign_in
     user_params = sign_in_params
 
