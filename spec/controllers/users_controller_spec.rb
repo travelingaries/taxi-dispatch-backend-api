@@ -16,7 +16,7 @@ RSpec.describe UsersController, type: :controller do
     let(:params) { { email: email, password: password, userType: 'passenger' } }
 
     context '올바른 승객 가입 요청인 경우' do
-      it_behaves_like 'OK 응답 처리', :request
+      it_behaves_like 'Created 응답 처리', :request
 
       it '응답에 id 정보가 포함된다' do
         request
@@ -28,7 +28,7 @@ RSpec.describe UsersController, type: :controller do
     context '올바른 기사 가입 요청인 경우' do
       before { params[:userType] = 'driver' }
 
-      it_behaves_like 'OK 응답 처리', :request
+      it_behaves_like 'Created 응답 처리', :request
 
       it '응답에 id 정보가 포함된다' do
         request

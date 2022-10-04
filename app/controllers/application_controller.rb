@@ -2,10 +2,9 @@
 
 class ApplicationController < ActionController::Base
   include CurrentUser
+  include JsonResolver
 
   protect_from_forgery unless: -> { request.format.json? }
-
-  helper_method :current_user
 
   rescue_from Exception do |e|
     error(e)

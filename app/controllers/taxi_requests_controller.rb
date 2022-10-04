@@ -16,10 +16,10 @@ class TaxiRequestsController < ApplicationController
     requests = TaxiRequest.order(id: :desc)
     requests = requests.where(passenger_id: current_user.id) if current_user.is_a?(User::Passenger)
 
-    render json: ActiveModel::Serializer::CollectionSerializer.new(
+    json_success(ActiveModel::Serializer::CollectionSerializer.new(
       requests,
       serializer: TaxiRequestSerializer
-    )
+    ).as_json)
   end
 
   def create
@@ -28,9 +28,8 @@ class TaxiRequestsController < ApplicationController
 
     request = TaxiRequest.create!(create_params)
 
-    render json: request,
-           serializer: TaxiRequestSerializer
-  rescue ActiveRecord::RecordInvalid
+    json_create_success(TaxiRequestSerializer.new(request).as_json)
+  rescue ActiveRecord::RecordInvalid, ActionController::ParameterMissing
     raise Exceptions::BadRequest, '주소는 100자 이하로 입력해주세요'
   end
 
@@ -39,8 +38,7 @@ class TaxiRequestsController < ApplicationController
 
     @request.accept!(current_user)
 
-    render json: @request,
-           serializer: TaxiRequestSerializer
+    json_success(TaxiRequestSerializer.new(@request).as_json)
   end
 
   private

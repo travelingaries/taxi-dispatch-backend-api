@@ -12,7 +12,8 @@ class UsersController < ApplicationController
     raise Exceptions::BadRequest, '아이디와 비밀번호를 확인해주세요' unless user&.authenticate(user_params[:password])
 
     log_in_user(user)
-    render json: { accessToken: user.token }
+
+    json_success({ accessToken: user.token })
   rescue ActionController::ParameterMissing
     render json: { message: '아이디와 비밀번호를 확인해주세요' }, status: Exceptions::BadRequest.http_status
   end
@@ -20,8 +21,7 @@ class UsersController < ApplicationController
   def sign_up
     user = CreateUserService.new(sign_up_params).run!
 
-    render json: user,
-           serializer: UserSerializer
+    json_create_success(UserSerializer.new(user).as_json)
   rescue ActionController::ParameterMissing
     message = if !valid_email?(params[:email])
                 '올바른 이메일을 입력해주세요'

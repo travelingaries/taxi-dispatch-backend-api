@@ -50,7 +50,7 @@ RSpec.describe TaxiRequestsController, type: :controller do
       let(:params) { { address: address } }
 
       context '올바른 요청인 경우' do
-        it_behaves_like 'OK 응답 처리', :request
+        it_behaves_like 'Created 응답 처리', :request
       end
 
       context '주소가 너무 긴 경우' do
