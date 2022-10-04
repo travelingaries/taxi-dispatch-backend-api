@@ -80,7 +80,7 @@ RSpec.describe UsersController, type: :controller do
         before { params.except!(:userType) }
 
         it_behaves_like 'Bad Request 응답 처리', :request do
-          let(:message) { '올바른 유저 타입을 입력해주세요' }
+          let(:message) { '올바른 사용자 타입을 입력해주세요' }
         end
       end
 
@@ -88,7 +88,7 @@ RSpec.describe UsersController, type: :controller do
         before { params[:userType] = '1' }
 
         it_behaves_like 'Bad Request 응답 처리', :request do
-          let(:message) { '올바른 유저 타입을 입력해주세요' }
+          let(:message) { '올바른 사용자 타입을 입력해주세요' }
         end
       end
     end

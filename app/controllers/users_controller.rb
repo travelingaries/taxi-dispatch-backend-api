@@ -28,7 +28,7 @@ class UsersController < ApplicationController
               elsif params[:password].blank?
                 '올바른 비밀번호를 입력해주세요'
               elsif !valid_user_type?(params[:userType])
-                '올바른 유저 타입을 입력해주세요'
+                '올바른 사용자 타입을 입력해주세요'
               end
     raise Exceptions::BadRequest, message
   end
@@ -44,7 +44,7 @@ class UsersController < ApplicationController
     params.require(%i(email password userType))
 
     raise Exceptions::BadRequest, '올바른 이메일을 입력해주세요' unless valid_email?(params[:email])
-    raise Exceptions::BadRequest, '올바른 유저 타입을 입력해주세요' unless valid_user_type?(params[:userType])
+    raise Exceptions::BadRequest, '올바른 사용자 타입을 입력해주세요' unless valid_user_type?(params[:userType])
 
     params.permit(%i(email password userType))
   end
