@@ -21,6 +21,7 @@ RSpec.describe UsersController, type: :controller do
       it '응답에 id 정보가 포함된다' do
         request
         expect(subject['id']).to_not be_nil
+        expect(subject['id']).to eq(User::Passenger.last.id)
       end
     end
 
@@ -32,6 +33,7 @@ RSpec.describe UsersController, type: :controller do
       it '응답에 id 정보가 포함된다' do
         request
         expect(subject['id']).to_not be_nil
+        expect(subject['id']).to eq(User::Driver.last.id)
       end
     end
 
