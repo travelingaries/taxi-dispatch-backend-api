@@ -32,7 +32,11 @@ RSpec.describe ApplicationController, type: :controller do
       context '토큰이 만료되었을 때' do
         before(:each) do
           current_user_provider.reset_current_user
-          Timecop.freeze(Time.current.change(year: 1))
+          Timecop.travel(1.year.from_now)
+        end
+
+        after(:each) do
+          Timecop.return
         end
 
         it_behaves_like 'Unauthorized 응답 처리', :request_index
