@@ -28,8 +28,8 @@ RSpec.describe TaxiRequestsController, type: :controller do
       context '올바른 요청인 경우' do
         let!(:prev_passenger) { create(:passenger) }
 
-        let!(:new_taxi_request) { create(:taxi_request, passenger_id: passenger.id) }
-        let!(:prev_taxi_request) { create(:taxi_request, passenger_id: prev_passenger.id) }
+        let!(:new_taxi_request) { create(:taxi_request, passenger: passenger) }
+        let!(:prev_taxi_request) { create(:taxi_request, passenger: prev_passenger) }
 
         it_behaves_like 'OK 응답 처리', :request
 
