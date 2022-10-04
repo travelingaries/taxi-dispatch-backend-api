@@ -75,7 +75,7 @@ RSpec.describe TaxiRequestsController, type: :controller do
         post :accept_request, params: { taxi_request_id: taxi_request.id }
       end
 
-      let!(:taxi_request) { create(:taxi_request, passenger_id: passenger.id) }
+      let!(:taxi_request) { create(:taxi_request, passenger: passenger) }
 
       context '승객이라 요청을 못 하는 경우' do
         it_behaves_like 'Forbidden 응답 처리', :request do
@@ -134,7 +134,7 @@ RSpec.describe TaxiRequestsController, type: :controller do
       let(:params) { { taxi_request_id: taxi_request.id } }
 
       let!(:passenger) { create(:passenger) }
-      let!(:taxi_request) { create(:taxi_request, passenger_id: passenger.id) }
+      let!(:taxi_request) { create(:taxi_request, passenger: passenger) }
 
       context '올바른 요청인 경우' do
         it_behaves_like 'OK 응답 처리', :request
@@ -198,7 +198,7 @@ RSpec.describe TaxiRequestsController, type: :controller do
       end
 
       let!(:passenger) { create(:passenger) }
-      let!(:taxi_request) { create(:taxi_request, passenger_id: passenger.id) }
+      let!(:taxi_request) { create(:taxi_request, passenger: passenger) }
 
       context '토큰이 없는 경우' do
         it_behaves_like 'Unauthorized 응답 처리', :request
