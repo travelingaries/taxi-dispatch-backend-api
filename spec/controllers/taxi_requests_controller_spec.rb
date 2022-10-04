@@ -86,9 +86,8 @@ RSpec.describe TaxiRequestsController, type: :controller do
   end
 
   context '유효한 토큰이 있는 기사인 경우' do
-    fixtures :taxi_requests
-
     let!(:driver) { create(:driver) }
+    let!(:taxi_requests) { create_list(:taxi_request, 4) }
     let(:payload) { { user_id: driver.id, exp: exp } }
     let(:token) { JWT.encode(payload, secret_key) }
 
