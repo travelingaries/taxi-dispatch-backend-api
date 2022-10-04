@@ -30,8 +30,7 @@ class CurrentUserProvider
   end
 
   def log_in_user(user)
-    user.token = jwt_encode(user_id: user.id)
-    user.save!
+    user.update!(token: jwt_encode(user_id: user.id))
     @env[CURRENT_USER_KEY] = user
   end
 
