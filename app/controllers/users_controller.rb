@@ -15,7 +15,7 @@ class UsersController < ApplicationController
 
     json_success({ accessToken: user.token })
   rescue ActionController::ParameterMissing
-    render json: { message: '아이디와 비밀번호를 확인해주세요' }, status: Exceptions::BadRequest.http_status
+    raise Exceptions::BadRequest, '아이디와 비밀번호를 확인해주세요'
   end
 
   def sign_up
