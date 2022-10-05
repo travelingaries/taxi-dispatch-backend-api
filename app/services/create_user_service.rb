@@ -17,7 +17,7 @@ class CreateUserService
     user_type.create!(
       email: @params[:email],
       password: @params[:password],
-      status: @params[:status] || 'normal'
+      status: @params[:status].presence || 'normal'
     )
   end
 end
