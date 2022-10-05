@@ -38,7 +38,7 @@ class ApplicationController < ActionController::Base
   private
 
   def authenticate_request
-    render json: { message: '로그인이 필요합니다' }, status: Exceptions::Unauthorized.http_status if current_user.blank?
+    raise Exceptions::Unauthorized, '로그인이 필요합니다' if current_user.blank?
   end
 
   def exception_handler(e, status)
