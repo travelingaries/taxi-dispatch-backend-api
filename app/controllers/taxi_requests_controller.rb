@@ -2,12 +2,8 @@
 
 class TaxiRequestsController < ApplicationController
   before_action :authenticate_request
-  before_action only: :create do
-    allow_passengers_only('승객만 배차 요청할 수 있습니다')
-  end
-  before_action only: :accept_request do
-    allow_drivers_only('기사만 배차 요청을 수락할 수 있습니다')
-  end
+  before_action -> { allow_passengers_only('승객만 배차 요청할 수 있습니다') }, only: :create
+  before_action -> { allow_drivers_only('기사만 배차 요청을 수락할 수 있습니다') }, only: :accept_request
   before_action :find_taxi_request, only: %i(accept_request)
 
   include UserTypeResolver
