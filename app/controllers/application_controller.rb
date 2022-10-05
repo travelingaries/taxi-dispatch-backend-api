@@ -41,21 +41,13 @@ class ApplicationController < ActionController::Base
     render json: { message: '로그인이 필요합니다' }, status: Exceptions::Unauthorized.http_status if current_user.blank?
   end
 
-  def exception_handler(e, status, error_code = nil)
-    response = {
-      data: {},
-      meta: {}
-    }
-    response[:message] = e.message if e.message
-    response[:meta][:error_code] = error_code if error_code
-
-    render json: response, status: status
+  def exception_handler(e, status)
+    render json:{ message: e.message }, status: status
   end
 
   def error(e)
     Rails.logger.error(e)
-    meta = { message: '현재 요청사항을 처리할 수 없습니다. 잠시 후 다시 시도해주세요' }
 
-    render json: { data: {}, meta: meta }, status: :internal_server_error
+    render json: { message: '현재 요청사항을 처리할 수 없습니다. 잠시 후 다시 시도해주세요' }, status: :internal_server_error
   end
 end
