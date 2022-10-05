@@ -3,7 +3,7 @@
 class CurrentUserProvider
   include CurrentOauth
 
-  CURRENT_USER_KEY ||= '_CURRENT_USER_KEY'
+  CURRENT_USER_KEY = '_CURRENT_USER_KEY'
 
   attr_accessor :request, :response
 
