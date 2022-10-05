@@ -24,7 +24,7 @@ class CurrentUserProvider
     return @env[CURRENT_USER_KEY] if @env.key?(CURRENT_USER_KEY)
 
     current_user = nil
-    current_user = User.where(token: token_from_header).take if token_valid?
+    current_user = User.find_by(token: token_from_header) if token_valid?
 
     @env[CURRENT_USER_KEY] = current_user
   end
