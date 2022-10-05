@@ -144,6 +144,11 @@ RSpec.describe TaxiRequestsController, type: :controller do
 
       context '올바른 요청인 경우' do
         it_behaves_like 'OK 응답 처리', :request
+
+        it '응답의 배차 요청 상태가 수락됨 상태다' do
+          request
+          expect(subject['status']).to eq('accepted')
+        end
       end
 
       context '존재하지 않는 요청인 경우' do
