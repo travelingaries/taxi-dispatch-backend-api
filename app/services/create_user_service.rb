@@ -6,14 +6,7 @@ class CreateUserService
   end
 
   def run!
-    user_type = case @params[:userType]
-                when 'driver'
-                  User::Driver
-                when 'passenger'
-                  User::Passenger
-                else
-                  return
-                end
+    user_type = User.type_to_class(@params[:userType])
     user_type.create!(
       email: @params[:email],
       password: @params[:password],

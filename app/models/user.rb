@@ -6,6 +6,17 @@ class User < ApplicationRecord
 
   before_save :downcase_email
 
+  USER_TYPES_TO_CLASSES = {
+    'driver' => User::Driver,
+    'passenger' => User::Passenger
+  }.freeze
+
+  class << self
+    def type_to_class(user_type)
+      USER_TYPES_TO_CLASSES[user_type]
+    end
+  end
+
   def downcase_email
     email.downcase!
   end
