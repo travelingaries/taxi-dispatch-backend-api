@@ -1,4 +1,4 @@
-name: Rubocop
+name: Rails
 
 on:
   - pull_request
@@ -13,7 +13,7 @@ jobs:
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 3.0
+          ruby-version: .tool-versions
           bundler-cache: true
 
       - name: Run Rubocop
@@ -28,7 +28,7 @@ jobs:
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 3.0
+          ruby-version: .tool-versions
           bundler-cache: true
 
       - name: Set up database
