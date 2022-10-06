@@ -63,7 +63,7 @@ group :development, :test do
   gem 'debug', platforms: %i(mri mingw x64_mingw)
   gem 'rspec'
   gem 'rspec-rails', '~> 4.0.0.beta2'
-  gem 'rubocop', '~> 1.0.0', require: false # Ruby static code analyzer
+  gem 'rubocop', '1.22.3', require: false # Ruby static code analyzer
   gem 'rubocop-performance', require: false # Performance optimization analysis
   gem 'rubocop-rails', require: false # rubcop extensions for rails convention
   gem 'timecop'
