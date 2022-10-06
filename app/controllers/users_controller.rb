@@ -22,15 +22,8 @@ class UsersController < ApplicationController
     user = CreateUserService.new(sign_up_params).run!
 
     json_create_success(UserSerializer.new(user).as_json)
-  rescue ActionController::ParameterMissing
-    message = if !valid_email?(params[:email])
-                '올바른 이메일을 입력해주세요'
-              elsif params[:password].blank?
-                '올바른 비밀번호를 입력해주세요'
-              elsif !valid_user_type?(params[:userType])
-                '올바른 사용자 타입을 입력해주세요'
-              end
-    raise Exceptions::BadRequest, message
+  rescue ActiveRecord::RecordInvalid, ActionController::ParameterMissing, Exceptions::BadRequest
+    validate_sign_up_params(params[:email], params[:password], params[:userType])
   end
 
   private
@@ -42,10 +35,6 @@ class UsersController < ApplicationController
 
   def sign_up_params
     params.require(%i(email password userType))
-
-    raise Exceptions::BadRequest, '올바른 이메일을 입력해주세요' unless valid_email?(params[:email])
-    raise Exceptions::BadRequest, '올바른 사용자 타입을 입력해주세요' unless valid_user_type?(params[:userType])
-
     params.permit(%i(email password userType))
   end
 
@@ -53,11 +42,9 @@ class UsersController < ApplicationController
     raise Exceptions::Conflict, '이미 가입된 이메일입니다' if User.find_by(email: params[:email]).present?
   end
 
-  def valid_email?(email)
-    email&.match(/\A\S+@.+\.\S+\z/).present?
-  end
-
-  def valid_user_type?(user_type)
-    user_type.in?(%w(passenger driver))
+  def validate_sign_up_params(email, password, user_type)
+    raise Exceptions::BadRequest, '올바른 이메일을 입력해주세요' if email&.match(URI::MailTo::EMAIL_REGEXP).blank?
+    raise Exceptions::BadRequest, '올바른 비밀번호를 입력해주세요' if password.blank?
+    raise Exceptions::BadRequest, '올바른 사용자 타입을 입력해주세요' unless user_type.in?(%w(passenger driver))
   end
 end

@@ -6,6 +6,8 @@ class User < ApplicationRecord
 
   before_save :downcase_email
 
+  validates :email, length: { maximum: 100 }, format: { with: URI::MailTo::EMAIL_REGEXP }
+
   USER_TYPES_TO_CLASSES = {
     'driver' => User::Driver,
     'passenger' => User::Passenger

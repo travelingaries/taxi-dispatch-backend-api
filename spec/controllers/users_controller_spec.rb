@@ -57,7 +57,7 @@ RSpec.describe UsersController, type: :controller do
       end
 
       context '이메일 형식이 아닌 경우' do
-        before { params[:email] = '1' }
+        before { params[:email] = '1@' }
 
         it_behaves_like 'Bad Request 응답 처리', :request do
           let(:message) { '올바른 이메일을 입력해주세요' }
