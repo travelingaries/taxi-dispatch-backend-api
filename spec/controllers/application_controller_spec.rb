@@ -22,7 +22,7 @@ RSpec.describe ApplicationController, type: :controller do
       let!(:user) { create(:user) }
       let(:current_user_provider) { CurrentUserProvider.new_instance(request) }
 
-      before(:each) do
+      before do
         current_user_provider.log_in_user(user)
         add_token_to_request(user: user)
       end
@@ -30,12 +30,12 @@ RSpec.describe ApplicationController, type: :controller do
       it_behaves_like 'OK 응답 처리', :request_index
 
       context '토큰이 만료되었을 때' do
-        before(:each) do
+        before do
           current_user_provider.reset_current_user
           Timecop.travel(1.year.from_now)
         end
 
-        after(:each) do
+        after do
           Timecop.return
         end
 
@@ -46,7 +46,7 @@ RSpec.describe ApplicationController, type: :controller do
     context '유효하지 않은 토큰이 헤더에 있을 때' do
       let!(:user) { create(:user) }
 
-      before(:each) do
+      before do
         user.token = '1234'
         add_token_to_request(user: user)
       end
@@ -55,7 +55,7 @@ RSpec.describe ApplicationController, type: :controller do
     end
 
     context '헤더에 토큰이 없을 때' do
-      before(:each) do
+      before do
         add_token_to_request
       end
 

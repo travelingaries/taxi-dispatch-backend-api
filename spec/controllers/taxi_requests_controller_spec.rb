@@ -14,7 +14,7 @@ RSpec.describe TaxiRequestsController, type: :controller do
     let(:payload) { { user_id: passenger.id, exp: exp } }
     let(:token) { JWT.encode(payload, secret_key) }
 
-    before(:each) do
+    before do
       passenger.update!(token: token)
 
       @request.headers['Authorization'] = "Token #{token}"
@@ -97,9 +97,8 @@ RSpec.describe TaxiRequestsController, type: :controller do
     let(:payload) { { user_id: driver.id, exp: exp } }
     let(:token) { JWT.encode(payload, secret_key) }
 
-    before(:each) do
-      driver.token = token
-      driver.save!
+    before do
+      driver.update!(token: token)
 
       @request.headers['Authorization'] = "Token #{token}"
     end
@@ -162,7 +161,7 @@ RSpec.describe TaxiRequestsController, type: :controller do
       context '이미 수락된 배차 요청인 경우' do
         let!(:another_driver) { create(:driver) }
 
-        before(:each) { taxi_request.update!(driver: another_driver) }
+        before { taxi_request.update!(driver: another_driver) }
 
         it_behaves_like 'Conflict 응답 처리', :request do
           let(:message) { '수락할 수 없는 배차 요청입니다. 다른 배차 요청을 선택하세요' }
@@ -182,7 +181,7 @@ RSpec.describe TaxiRequestsController, type: :controller do
       end
 
       context '발급된 적 없는 토큰인 경우' do
-        before(:each) do
+        before do
           @request.headers['Authorization'] = 'Token 1234'
         end
 

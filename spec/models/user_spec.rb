@@ -9,7 +9,7 @@ describe User do
     context '비밀번호를 변경하는 경우' do
       let(:password) { 'password' }
 
-      before(:each) do
+      before do
         user.password = password
         user.save!
       end
