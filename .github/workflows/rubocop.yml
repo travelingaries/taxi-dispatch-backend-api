@@ -10,3 +10,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@e932e7af67fc4a8fc77bd86b744acd4e42fe3543
+        with:
+          ruby-version: 3.0
+          bundler-cache: true
