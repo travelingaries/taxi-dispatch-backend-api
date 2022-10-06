@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 20_220_919_071_817) do
+ActiveRecord::Schema[7.0].define(version: 20_221_006_025_827) do
   create_table 'taxi_requests', force: :cascade do |t|
     t.integer 'passenger_id', limit: 11, null: false
     t.integer 'driver_id', limit: 11
@@ -32,5 +32,6 @@ ActiveRecord::Schema[7.0].define(version: 20_220_919_071_817) do
     t.datetime 'created_at', precision: nil, null: false
     t.datetime 'updated_at', precision: nil, null: false
     t.text 'data'
+    t.index ['email'], name: 'index_users_on_email', unique: true
   end
 end

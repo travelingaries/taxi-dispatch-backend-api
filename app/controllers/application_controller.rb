@@ -42,7 +42,7 @@ class ApplicationController < ActionController::Base
   end
 
   def exception_handler(e, status)
-    render json:{ message: e.message }, status: status
+    render json: { message: e.message }, status: status
   end
 
   def error(e)

@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class UsersController < ApplicationController
-  before_action :check_already_signed_up, only: :sign_up
-
   VALID_USER_TYPES = %w(driver passenger).freeze
 
   def sign_in
@@ -23,7 +21,7 @@ class UsersController < ApplicationController
 
     json_create_success(UserSerializer.new(user).as_json)
   rescue ActiveRecord::RecordInvalid, ActionController::ParameterMissing, Exceptions::BadRequest
-    validate_sign_up_params(params[:email], params[:password], params[:userType])
+    raise_sign_up_errors(params[:email], params[:password], params[:userType])
   end
 
   private
@@ -38,13 +36,10 @@ class UsersController < ApplicationController
     params.permit(%i(email password userType))
   end
 
-  def check_already_signed_up
-    raise Exceptions::Conflict, '이미 가입된 이메일입니다' if User.find_by(email: params[:email]).present?
-  end
-
-  def validate_sign_up_params(email, password, user_type)
+  def raise_sign_up_errors(email, password, user_type)
     raise Exceptions::BadRequest, '올바른 이메일을 입력해주세요' if email&.match(URI::MailTo::EMAIL_REGEXP).blank?
     raise Exceptions::BadRequest, '올바른 비밀번호를 입력해주세요' if password.blank?
     raise Exceptions::BadRequest, '올바른 사용자 타입을 입력해주세요' unless user_type.in?(%w(passenger driver))
+    raise Exceptions::Conflict, '이미 가입된 이메일입니다' if User.exists?(email: params[:email])
   end
 end
