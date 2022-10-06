@@ -10,7 +10,7 @@ AllCops:
   Exclude:
     - vendor/rbs/gem_rbs_collection/**/*
     - bin/**/*
-    - vendor/**
+    - vendor/**/*
 
 Layout/LineLength:
   Exclude:
