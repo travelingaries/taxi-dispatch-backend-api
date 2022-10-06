@@ -6,14 +6,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '3.0'
+          ruby-version: .tool-versions
           bundler-cache: true
-
-      - name: Run Rubocop
-        run: |
-          bundle exec rubocop
