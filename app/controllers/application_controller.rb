@@ -12,27 +12,27 @@ class ApplicationController < ActionController::Base
 
   # 400
   rescue_from Exceptions::BadRequest, ActiveRecord::RecordInvalid, ActionController::ParameterMissing, ArgumentError do |e|
-    exception_handler e, :bad_request
+    exception_handler e, Exceptions::BadRequest.http_status
   end
 
   # 401
   rescue_from Exceptions::Unauthorized do |e|
-    exception_handler e, :unauthorized
+    exception_handler e, e.class.http_status
   end
 
   # 403
   rescue_from Exceptions::Forbidden do |e|
-    exception_handler e, :forbidden
+    exception_handler e, e.class.http_status
   end
 
   # 404
   rescue_from Exceptions::NotFound, ActiveRecord::RecordNotFound do |e|
-    exception_handler e, :not_found
+    exception_handler e, e.class.http_status
   end
 
   # 409
   rescue_from Exceptions::Conflict, ActiveRecord::RecordNotDestroyed do |e|
-    exception_handler e, :conflict
+    exception_handler e, e.class.http_status
   end
 
   private
