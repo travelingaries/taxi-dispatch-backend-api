@@ -18,9 +18,7 @@ RSpec.describe UsersController, type: :controller do
     context '올바른 승객 가입 요청인 경우' do
       it_behaves_like 'Created 응답 처리', :request
 
-      let(:expected_response) do
-        UserSerializer.new(User::Passenger.last).as_json
-      end
+      let(:expected_response) { UserSerializer.new(User::Passenger.last).as_json }
 
       it '응답에 id 정보가 포함된다' do
         request
@@ -34,9 +32,7 @@ RSpec.describe UsersController, type: :controller do
 
       it_behaves_like 'Created 응답 처리', :request
 
-      let(:expected_response) do
-        UserSerializer.new(User::Driver.last).as_json
-      end
+      let(:expected_response) { UserSerializer.new(User::Driver.last).as_json }
 
       it '응답에 id 정보가 포함된다' do
         request
