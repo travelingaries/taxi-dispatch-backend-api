@@ -9,7 +9,7 @@ class UsersController < ApplicationController
 
     log_in_user(user)
 
-    json_success({ accessToken: user.token })
+    json_success(UserTokenSerializer.new(user).as_json)
   rescue ActionController::ParameterMissing
     raise Exceptions::BadRequest, '아이디와 비밀번호를 확인해주세요'
   end
