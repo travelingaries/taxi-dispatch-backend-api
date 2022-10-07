@@ -114,10 +114,12 @@ RSpec.describe UsersController, type: :controller do
 
       it_behaves_like 'OK 응답 처리', :request
 
+      let(:expected_response) { UserTokenSerializer.new(User.last).as_json }
+
       it '응답이 생성된 토큰을 포함한다' do
         request
-        expect(subject['accessToken']).to_not be_nil
-        expect(subject['accessToken']).to eq(User.last.token)
+
+        expect(subject).to eq(expected_response.as_json)
       end
     end
 
