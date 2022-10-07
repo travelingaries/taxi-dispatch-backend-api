@@ -4,7 +4,7 @@ FactoryBot.define do
   factory :user do
     type              { User::Passenger.name }
     email             { Faker::Internet.unique.email }
-    password_digest   { Faker::Internet.password }
+    password          { Faker::Internet.password }
     token             { SecureRandom.hex(30) }
     created_at        { Time.zone.now - 2.months }
     updated_at        { Time.zone.now - 1.month }
