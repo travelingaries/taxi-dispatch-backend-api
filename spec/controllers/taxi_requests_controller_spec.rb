@@ -58,25 +58,27 @@ RSpec.describe TaxiRequestsController, type: :controller do
         it_behaves_like 'Created 응답 처리', :request
       end
 
-      context '주소가 없는 경우' do
-        it_behaves_like 'Bad Request 응답 처리', :request do
-          let(:params) { {} }
-          let(:message) { '주소는 100자 이하로 입력해주세요' }
+      context '올바르지 않은 요청인 경우' do
+        context '주소가 없는 경우' do
+          it_behaves_like 'Bad Request 응답 처리', :request do
+            let(:params) { {} }
+            let(:message) { '주소는 100자 이하로 입력해주세요' }
+          end
         end
-      end
 
-      context '주소가 너무 긴 경우' do
-        it_behaves_like 'Bad Request 응답 처리', :request do
-          let(:params) { { address: 'a' * 101 } }
-          let(:message) { '주소는 100자 이하로 입력해주세요' }
+        context '주소가 너무 긴 경우' do
+          it_behaves_like 'Bad Request 응답 처리', :request do
+            let(:params) { { address: 'a' * 101 } }
+            let(:message) { '주소는 100자 이하로 입력해주세요' }
+          end
         end
-      end
 
-      context '기존 요청이 있는 경우' do
-        before { create(:taxi_request, passenger_id: passenger.id) }
+        context '기존 요청이 있는 경우' do
+          before { create(:taxi_request, passenger_id: passenger.id) }
 
-        it_behaves_like 'Conflict 응답 처리', :request do
-          let(:message) { '아직 대기중인 배차 요청이 있습니다' }
+          it_behaves_like 'Conflict 응답 처리', :request do
+            let(:message) { '아직 대기중인 배차 요청이 있습니다' }
+          end
         end
       end
     end
@@ -155,21 +157,23 @@ RSpec.describe TaxiRequestsController, type: :controller do
         end
       end
 
-      context '존재하지 않는 요청인 경우' do
-        before { params[:taxi_request_id] = 0 }
+      context '올바르지 않은 요청인 경우' do
+        context '존재하지 않는 요청인 경우' do
+          before { params[:taxi_request_id] = 0 }
 
-        it_behaves_like 'Not Found 응답 처리', :request do
-          let(:message) { '존재하지 않는 배차 요청입니다' }
+          it_behaves_like 'Not Found 응답 처리', :request do
+            let(:message) { '존재하지 않는 배차 요청입니다' }
+          end
         end
-      end
 
-      context '이미 수락된 배차 요청인 경우' do
-        let!(:another_driver) { create(:driver) }
+        context '이미 수락된 배차 요청인 경우' do
+          let!(:another_driver) { create(:driver) }
 
-        before { taxi_request.update!(driver: another_driver) }
+          before { taxi_request.update!(driver: another_driver) }
 
-        it_behaves_like 'Conflict 응답 처리', :request do
-          let(:message) { '수락할 수 없는 배차 요청입니다. 다른 배차 요청을 선택하세요' }
+          it_behaves_like 'Conflict 응답 처리', :request do
+            let(:message) { '수락할 수 없는 배차 요청입니다. 다른 배차 요청을 선택하세요' }
+          end
         end
       end
     end
