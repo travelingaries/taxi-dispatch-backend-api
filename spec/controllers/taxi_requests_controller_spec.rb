@@ -26,18 +26,23 @@ RSpec.describe TaxiRequestsController, type: :controller do
       end
 
       context '올바른 요청인 경우' do
-        let!(:prev_passenger) { create(:passenger) }
+        let!(:another_passenger) { create(:passenger) }
 
         let!(:new_taxi_request) { create(:taxi_request, passenger: passenger) }
-        let!(:prev_taxi_request) { create(:taxi_request, passenger: prev_passenger) }
+        let!(:prev_taxi_request) { create(:taxi_request, passenger: passenger, status: :completed) }
+        let!(:another_taxi_request) { create(:taxi_request, passenger: another_passenger) }
 
         it_behaves_like 'OK 응답 처리', :request
 
-        it '응답이 TaxiRequest 정보가 담긴 길이 1의 배열이다' do
+        let(:expected_response) do
+          requests = TaxiRequest.order(id: :desc).where(passenger_id: passenger.id)
+          ActiveModel::Serializer::CollectionSerializer.new(requests, serializer: TaxiRequestSerializer).as_json
+        end
+
+        it '자신의 배차 요청 목록이 응답된다' do
           request
-          expect(subject.is_a?(Array)).to eq(true)
-          expect(subject.length).to eq(1)
-          expect(subject.first['passengerId']).to eq(passenger.id)
+
+          expect(subject).to eq(expected_response.as_json)
         end
       end
     end
