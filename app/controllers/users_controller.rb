@@ -4,10 +4,8 @@ class UsersController < ApplicationController
   VALID_USER_TYPES = %w(driver passenger).freeze
 
   def sign_in
-    user_params = sign_in_params
-
-    user = User.find_by(email: user_params[:email])
-    raise Exceptions::BadRequest, '아이디와 비밀번호를 확인해주세요' unless user&.authenticate(user_params[:password])
+    user = User.find_by(email: sign_in_params[:email])
+    raise Exceptions::BadRequest, '아이디와 비밀번호를 확인해주세요' unless user&.authenticate(sign_in_params[:password])
 
     log_in_user(user)
 
