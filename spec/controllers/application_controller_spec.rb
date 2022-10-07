@@ -35,10 +35,6 @@ RSpec.describe ApplicationController, type: :controller do
           Timecop.travel(1.year.from_now)
         end
 
-        after do
-          Timecop.return
-        end
-
         it_behaves_like 'Unauthorized 응답 처리', :request_index
       end
     end

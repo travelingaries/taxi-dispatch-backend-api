@@ -47,5 +47,7 @@ RSpec.configure do |config|
 
   config.after(:each) { ActiveSupport::CurrentAttributes.reset_all }
 
+  config.after(:each) { Timecop.return }
+
   config.include Requests
 end
