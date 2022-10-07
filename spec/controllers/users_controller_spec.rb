@@ -12,7 +12,7 @@ RSpec.describe UsersController, type: :controller do
       post :sign_up, params: params
     end
 
-    let(:email) { 'test@email.com' }
+    let(:email) { Faker::Internet.safe_email }
     let(:params) { { email: email, password: password, userType: 'passenger' } }
 
     context '올바른 승객 가입 요청인 경우' do
