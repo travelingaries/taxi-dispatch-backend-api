@@ -88,6 +88,6 @@ group :test do
   gem 'factory_bot_rails'
   gem 'faker'
   gem 'selenium-webdriver'
-  gem 'shoulda-matchers'
+  gem 'shoulda-matchers', '~> 5.2.0'
   gem 'webdrivers'
 end

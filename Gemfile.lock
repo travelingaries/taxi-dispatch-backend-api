@@ -323,7 +323,7 @@ DEPENDENCIES
   rubocop-performance
   rubocop-rails
   selenium-webdriver
-  shoulda-matchers
+  shoulda-matchers (~> 5.2.0)
   sprockets-rails
   sqlite3 (~> 1.4)
   stimulus-rails

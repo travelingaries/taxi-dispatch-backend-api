@@ -2,8 +2,12 @@
 
 require 'spec_helper'
 
-describe User do
+RSpec.describe User, type: :model do
   let!(:user) { create(:user) }
+
+  describe 'validations' do
+    it { should validate_length_of(:email).is_at_most(100) }
+  end
 
   describe '#password' do
     context '비밀번호를 변경하는 경우' do
