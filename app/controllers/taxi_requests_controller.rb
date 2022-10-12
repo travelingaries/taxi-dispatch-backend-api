@@ -25,8 +25,10 @@ class TaxiRequestsController < ApplicationController
     request = TaxiRequest.create!(create_params)
 
     json_create_success(TaxiRequestSerializer.new(request).as_json)
-  rescue ActiveRecord::RecordInvalid, ActionController::ParameterMissing
+  rescue ActionController::ParameterMissing
     raise Exceptions::BadRequest, '주소는 100자 이하로 입력해주세요'
+  rescue ActiveRecord::RecordInvalid => e
+    raise Exceptions::BadRequest, I18n.t('errors.messages.too_long', attribute: '주소', count: 100)
   end
 
   def accept_request

@@ -1,0 +1,6 @@
+---
+ko:
+  errors:
+    format: "%{message}"
+    messages:
+      too_long: "%{attribute}는 %{count}자 이하로 입력해주세요"
