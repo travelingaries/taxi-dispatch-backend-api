@@ -1,5 +1,9 @@
 ---
 ko:
+  activerecord:
+    errors:
+      messages:
+        record_invalid: "%{errors}"
   errors:
     format: "%{message}"
     messages:
