@@ -6,7 +6,7 @@ class TaxiRequest < ApplicationRecord
 
   enum status: { standBy: 'standBy', accepted: 'accepted', canceled: 'canceled', completed: 'completed' }
 
-  validates :address, length: { maximum: 100 }
+  validates :address, length: { maximum: 100, message: '주소는 100자 이하로 입력해주세요' }
 
   def accepted?
     driver.present?
